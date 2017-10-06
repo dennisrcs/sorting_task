@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Admin Panel</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="config.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div id="form_wrapper">
+			<h2 id="parameters_title">Sorting task parameters</h2>
+				<form id="parameters_form" action="sorting_task.html">
+					<div class="form-group">
+					  <label for="visible_time">Visible time (ms):</label>
+					  <input type="number" class="form-control" id="visible_time" placeholder="Enter item visible time (in milliseconds)" name="visible_time">
+					</div>
+					<div class="form-group">
+					  <label for="fadeout_time">Fadeout time (ms):</label>
+					  <input type="number" class="form-control" id="fadeout_time" placeholder="Enter fadeout effect time (in milliseconds)" name="pwdfadeout_time">
+					</div>
+					<div class="form-group">
+					  <label for="response_time">Response time (ms):</label>
+					  <input type="number" class="form-control" id="response_time" placeholder="Enter swap response time (in milliseconds)" name="response_time">
+					</div>
+					<div class="form-group">
+					  <label for="num_items">Items number:</label>
+					  <input type="number" class="form-control" id="num_items" placeholder="Enter number of items" name="num_items">
+					</div>
+					<div class="form-group">
+					  <label for="increment_step">Increment step:</label>
+					  <input type="number" step="0.01" class="form-control" id="increment_step" placeholder="Enter increment/decrement step" name="increment_step">
+					</div>
+					<div class="form-group">
+					  <label for="initial_compensation">Initial compensation:</label>
+					  <input type="number" class="form-control" id="initial_compensation" placeholder="Enter initial compensation" name="initial_compensation">
+					</div>
+					<div class="form-group">
+					  <label for="maximum_compensation">Maximum compensation:</label>
+					  <input type="number" class="form-control" id="maximum_compensation" placeholder="Enter maximum compensation" name="maximum_compensation">
+					</div>
+					<div class="checkbox">
+					  <label><input type="checkbox" name="mix"> Mix ascending and descending tasks</label>
+					</div>
+					<button type="submit" class="btn btn-default" id="btn_set">Set parameters and go to sorting task page</button>
+				  </form>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+<title>Welcome!</title>
+</head>
+<body>
+	<div class="container">
+		<div id="main_form">
+			<h3 id="h2_daysession">Please provide the participant's ID below</h3>
+			<form id="form-config" action="sorting_task.html">
+				<div id="form-group">
+					<!--<label for="txtparticipant">Participant's ID:</label>-->
+					<input id="txtparticipant" type="number" class="form-control" required></input>
+					</br>
+					<input id="btn_start" type="submit" class="btn btn-danger btn-block" value="Start Study" />
+				</div>
+			</form>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function(){
+			localStorage.clear();
+			$('#txtparticipant').change(function () {
+				var participantID = $(this).val();
+				localStorage.setItem("participantID", participantID);
+			});
+			resetParameters();
+		});
+		
+		function resetParameters(){
+			localStorage.setItem("visibleTime", 1500);
+			localStorage.setItem("responseTime", 4000);
+			localStorage.setItem("fadeoutTime", 1000);
+			localStorage.setItem("itemsNumber", 20);
+			localStorage.setItem("incrementStep", 0.10);
+			localStorage.setItem("initialCompensation", 3);
+			localStorage.setItem("maximumCompensation", 5);
+		}
+	</script>
+</body>
+</html>

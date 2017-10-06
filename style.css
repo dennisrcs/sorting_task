@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#sortable {
+	list-style-type: none;
+}
+
+#sortable li {
+	cursor: pointer;
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+#task_wrapper {
+	display: table;
+	margin: 0 auto;
+	margin-top: 50px;
+}
+
+.stopwatch {
+	position: fixed;
+	top: 50px;
+	right: 150px;
+	font-size: 18pt;
+	height: 100%;
+	text-align: center;
+}
+
+#score_container{
+	position: fixed;
+	top: 50px;
+	left: 150px;
+	font-size: 18pt;
+	height: 100%;
+	text-align: center;
+}
+
+#sort_statement{
+	display: table;
+	margin: 0 auto;
+	margin-top: 100px;
+}
+
+#main_form {
+	position: absolute;
+	left: 50%;
+	top: 45%;
+	transform: translate(-50%, -50%);
+}
+
+#btn_container {
+	display: table;
+	margin: 0 auto;
+}
+
+#btn_set {
+	width: 100%;
+}
+
+#form_wrapper{
+	margin-top: 150px;
+}
+
+.selected_lower {
+	background: #00FF00;
+}
+
+.selected_greater {
+	background: #FF4433;
+}
+
+.container{
+	width: 500px;
+}
+
+#link_config{
+	display: table;
+	margin: 0 auto;
+	margin-top: 50px;
+}
+
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #4CAF50;
+}
