@@ -4,11 +4,16 @@
 }
 
 #sortable {
+	padding: 0;
+	margin: 0;
 	list-style-type: none;
 }
 
 #sortable li {
-	cursor: pointer;
+	width: 100px;
+	height: 50px;
+	line-height: 50px;
+	display: inline-block;
 	font-size: 14pt;
 	font-weight: bold;
 }
@@ -17,6 +22,8 @@
 	display: table;
 	margin: 0 auto;
 	margin-top: 50px;
+	width: 1000px;
+	text-align: center;
 }
 
 .stopwatch {
@@ -60,7 +67,7 @@
 }
 
 #form_wrapper{
-	margin-top: 150px;
+	margin-top: 50px;
 }
 
 .selected_lower {

@@ -1,14 +1,18 @@
 var failAudio = new Audio('fail.mp3');
 var visibleTime = localStorage.getItem("visibleTime");
 var fadeoutTime = localStorage.getItem("fadeoutTime");
-var itemsNumber = localStorage.getItem("itemsNumber");
+var numColumns = parseInt(localStorage.getItem("numColumns"));
+var numRows = parseInt(localStorage.getItem("numRows"));
 var responseTime = localStorage.getItem("responseTime");
 var incrementStep = localStorage.getItem("incrementStep");
 var maximumCompensation = localStorage.getItem("maximumCompensation");
+var percentSmallerGreen = parseFloat(localStorage.getItem("percentSmallerGreen"));
+var flipCorrectAnswer = parseFloat(localStorage.getItem("flipCorrectAnswer"));
 var stopwatch = null;
 var intervalId = null;
 
 $(document).ready(function(){
+	document.addEventListener('contextmenu', event => event.preventDefault());
 	// stopwatch
 	class Stopwatch {
 		constructor(display, results) {
@@ -87,35 +91,22 @@ $(document).ready(function(){
 });
 
 function initialize() {
-	var numItems = itemsNumber;
+	var numItems = numColumns * numRows;
 	var table = document.getElementById("sortable");
 	
+	var parentsWidth = $("#sortable").width();
+	var childWidth = parentsWidth/numColumns;
 	for (i = 0; i < numItems; i++)
 	{
 		var li = document.createElement("li");
 		li.setAttribute("id", "item" + (i+1));
 		li.setAttribute("class", "ui-state-default");
+		li.style.cssText = "width:" + childWidth + "px;";
 		table.appendChild(li);
+		
 	}
 	
 	assignRandomNumbers();
-
-	/*$( function() {
-		$( "#sortable" ).sortable({
-		    //revert: true
-			update: function() {
-				if(isListSorted())
-				{
-					alert("Good Job! Keep it up!");
-					stopwatch.stop();
-					//stopwatch.reset()
-					initialize(stopwatch);
-				}
-			}
-		});
-		
-	});*/
-	
 	$("#sortable, #sortable li").disableSelection();
 	
 	setPromise();
@@ -124,7 +115,7 @@ function initialize() {
 }
 
 function assignRandomNumbers(){
-	var numItems = itemsNumber;
+	var numItems = numColumns * numRows;
 	for (i = 0; i < numItems; i++)
 	{
 		var samplesNumber = Math.random() * 1000000 + "";
@@ -136,7 +127,6 @@ function assignRandomNumbers(){
 
 function setPromise()
 {
-	var numItems = itemsNumber;
 	if(isListSorted())
 	{
 		alert("Good Job! Keep it up!");
@@ -148,7 +138,7 @@ function setPromise()
 		showSelected(lower, greater);
 		
 		clearItems();
-		assignRandomNumbers(numItems);
+		assignRandomNumbers();
 		markItems();
 		stopwatch.start();
 		setPromise();
@@ -219,14 +209,8 @@ function clearItems()
 	var itemsMarkedLower = $("#sortable .selected_lower");
 	var itemsMarkedGreater = $("#sortable .selected_greater");
 	
-	clearLowerOrGreater(itemsMarkedLower, "selected_lower");
-	clearLowerOrGreater(itemsMarkedGreater, "selected_greater");
-}
-
-function clearLowerOrGreater(item, filter)
-{
-	if (item != undefined)
-		item.removeClass(filter);	
+	itemsMarkedLower.removeClass("selected_lower");
+	itemsMarkedGreater.removeClass("selected_greater");
 }
 
 function markItems()
@@ -242,38 +226,38 @@ function markItems()
 	var valFirstItem = parseInt(items[firstRandomItem].innerHTML);
 	var valSecondItem = parseInt(items[secondRandomItem].innerHTML);
 	
-	if (Math.random() < 0.7)	
+	if (Math.random() < percentSmallerGreen)	
 	{
 		if (valFirstItem < valSecondItem)
-		{
-			items[firstRandomItem].setAttribute("class", "selected_lower");
-			items[secondRandomItem].setAttribute("class", "selected_greater");
-		}
+			markFirstLowerSecondGreater(items[firstRandomItem], items[secondRandomItem]);
 		else
-		{
-			items[firstRandomItem].setAttribute("class", "selected_greater");
-			items[secondRandomItem].setAttribute("class", "selected_lower");
-		}
+			markSecondLowerFirstGreater(items[firstRandomItem], items[secondRandomItem]);
 	}
 	else
 	{
 		if (valFirstItem > valSecondItem)
-		{
-			items[firstRandomItem].setAttribute("class", "selected_lower");
-			items[secondRandomItem].setAttribute("class", "selected_greater");
-		}
+			markFirstLowerSecondGreater(items[firstRandomItem], items[secondRandomItem]);
 		else
-		{
-			items[firstRandomItem].setAttribute("class", "selected_greater");
-			items[secondRandomItem].setAttribute("class", "selected_lower");
-		}
+			markSecondLowerFirstGreater(items[firstRandomItem], items[secondRandomItem]);
 	}
 	
-	$.data(this, 'timer1', setTimeout(function(){
+	$.data(this, 'fadeoutTimer', setTimeout(function(){
 		$(items[firstRandomItem]).fadeTo(fadeoutTime, 0);
 		$(items[secondRandomItem]).fadeTo(fadeoutTime, 0);
 	}, visibleTime));
 	
+}
+
+function markFirstLowerSecondGreater(firstItem, secondItem)
+{
+	firstItem.setAttribute("class", "selected_lower");
+	secondItem.setAttribute("class", "selected_greater");
+}
+
+function markSecondLowerFirstGreater(firstItem, secondItem)
+{
+	firstItem.setAttribute("class", "selected_greater");
+	secondItem.setAttribute("class", "selected_lower");
 }
 
 function updateScore(isCorrectMove)
@@ -285,12 +269,12 @@ function updateScore(isCorrectMove)
 	var currentScoreString = match[0];
 	var currentScore = parseFloat(currentScoreString);
 	
-	var in_decrement = parseFloat(incrementStep);
+	var step = parseFloat(incrementStep);
 	
 	if (isCorrectMove)
-		currentScore = currentScore + in_decrement;
+		currentScore = currentScore + step;
 	else
-		currentScore = currentScore - in_decrement;
+		currentScore = currentScore - step;
 	
 	var currentScoreRounded = Math.round(currentScore * 100) / 100;
 	
@@ -312,16 +296,29 @@ function callbackBtnSwap(intervalId)
 	if (!isCorrectMove)
 		decrementScorePlayFail();
 	else
-		updateScore(true);
+	{
+		if (Math.random() < flipCorrectAnswer) // there's a small chance that correct answer will be flipped
+		{
+			decrementScorePlayFail();
+			swapItems(lower, greater); // swaps the items again
+		}
+		else
+			updateScore(true);
+	}
 	
-	var aux = lower.innerHTML;
-	lower.innerHTML = greater.innerHTML;
-	greater.innerHTML = aux;
+	swapItems(lower, greater);
 	
 	showSelected(lower, greater);
 	clearItems();
 	markItems();
 	setPromise();
+}
+
+function swapItems(lower, greater)
+{
+	var aux = lower.innerHTML;
+	lower.innerHTML = greater.innerHTML;
+	greater.innerHTML = aux;
 }
 
 function callbackBtnNotSwap(intervalId)
@@ -335,7 +332,15 @@ function callbackBtnNotSwap(intervalId)
 	if (shouldHaveMoved)
 		decrementScorePlayFail();
 	else
-		updateScore(true);
+	{
+		if (Math.random() < flipCorrectAnswer) // there's a small chance that correct answer will be flipped
+		{
+			decrementScorePlayFail();
+			swapItems(lower, greater);
+		}
+		else
+			updateScore(true);
+	}
 	
 	showSelected(lower, greater);
 	clearItems();
@@ -366,7 +371,7 @@ function decrementScorePlayFail()
 function showSelected(lower, greater)
 {
 	// clearing timers
-	clearTimeout($.data(this, 'timer1'));
+	clearTimeout($.data(this, 'fadeoutTimer'));
 	
 	// stop fadeout animation
 	$(lower).stop(true,true);
@@ -404,13 +409,13 @@ function checkCorrectMove(lower, greater)
 function move() {
 	var elem = document.getElementById("myBar");   
 	var width = 1;
-	var id = setInterval(frame, 40);
+	var id = setInterval(frame, 40); //make a function of responseTime
 	
 	function frame() {
 		if (width >= 100) {
 		  clearInterval(id);
 		} else {
-		  width++; 
+		  width += 1; 
 		  elem.style.width = width + '%'; 
 		}
 	}

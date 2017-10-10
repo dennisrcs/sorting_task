@@ -28,8 +28,12 @@
 					  <input type="number" class="form-control" id="response_time" placeholder="Enter swap response time (in milliseconds)" name="response_time">
 					</div>
 					<div class="form-group">
-					  <label for="num_items">Items number:</label>
-					  <input type="number" class="form-control" id="num_items" placeholder="Enter number of items" name="num_items">
+					  <label for="num_columns">Number of columns:</label>
+					  <input type="number" max="10" class="form-control" id="num_columns" placeholder="Enter number of columns" name="num_columns">
+					</div>
+					<div class="form-group">
+					  <label for="num_rows">Number of rows:</label>
+					  <input type="number" class="form-control" id="num_rows" placeholder="Enter number of rows" name="num_rows">
 					</div>
 					<div class="form-group">
 					  <label for="increment_step">Increment step:</label>
@@ -37,14 +41,19 @@
 					</div>
 					<div class="form-group">
 					  <label for="initial_compensation">Initial compensation:</label>
-					  <input type="number" class="form-control" id="initial_compensation" placeholder="Enter initial compensation" name="initial_compensation">
+					  <input type="number" class="form-control" min="0" id="initial_compensation" placeholder="Enter initial compensation" name="initial_compensation">
 					</div>
 					<div class="form-group">
 					  <label for="maximum_compensation">Maximum compensation:</label>
-					  <input type="number" class="form-control" id="maximum_compensation" placeholder="Enter maximum compensation" name="maximum_compensation">
+					  <input type="number" class="form-control" max="50" id="maximum_compensation" placeholder="Enter maximum compensation" name="maximum_compensation">
 					</div>
-					<div class="checkbox">
-					  <label><input type="checkbox" name="mix"> Mix ascending and descending tasks</label>
+					<div class="form-group">
+					  <label for="percent_smaller_green">Percent smaller is highlighted green:</label>
+					  <input type="number" step="0.01" min="0" max="1" class="form-control" id="percent_smaller_green" placeholder="Enter percent of the times the smaller item is highlighted green" name="percent_smaller_green">
+					</div>
+					<div class="form-group">
+					  <label for="flip_correct_answer">Percent of times correct answer is flipped:</label>
+					  <input type="number" step="0.01" min="0" max="1" class="form-control" id="flip_correct_answer" placeholder="Enter Percent of times correct answer is flipped" name="flip_correct_answer">
 					</div>
 					<button type="submit" class="btn btn-default" id="btn_set">Set parameters and go to sorting task page</button>
 				  </form>
