@@ -127,6 +127,11 @@ function assignRandomNumbers(){
 
 function setPromise()
 {
+	if(isCloseToEnd())
+		flipCorrectAnswer = flipCorrectAnswer * 2;
+	else
+		flipCorrectAnswer = parseFloat(localStorage.getItem("flipCorrectAnswer"));
+		
 	if(isListSorted())
 	{
 		alert("Good Job! Keep it up!");
@@ -176,15 +181,41 @@ function setPromise()
 	}
 }
 
+function isCloseToEnd()
+{
+	var itemsList = itemsToArray();
+	var countItemsSorted = 0;
+	var listSize = itemsList.length;
+	
+	// clones list
+	var clonedItemsList = itemsList.slice();
+	
+	// sort list
+	clonedItemsList.sort();
+	
+	for (let i = 0; i < listSize; i++)
+		if (itemsList[i] == clonedItemsList[i])
+			countItemsSorted += 1;
+	
+	var sortedRatio = (countItemsSorted/listSize);
+	return (sortedRatio > 0.90);
+}
+
 function isListSorted()
+{
+	var itemsList = itemsToArray();
+	return isSorted(itemsList);
+}
+
+function itemsToArray()
 {
 	var items = $("#sortable li");
 	var itemsList = [];
 	
 	for (i = 0; i < items.length; i++)
-		itemsList[i] = parseInt(items[i].innerText);
-	
-	return isSorted(itemsList);
+		itemsList[i] = parseInt(items[i].innerText);	
+		
+	return itemsList;
 }
 
 function isSorted(arr)
