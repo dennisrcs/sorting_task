@@ -1,3 +1,5 @@
+var bar = null;
+
 var failAudio = new Audio('fail.mp3');
 var visibleTime = localStorage.getItem("visibleTime");
 var fadeoutTime = localStorage.getItem("fadeoutTime");
@@ -10,69 +12,24 @@ var percentSmallerGreen = parseFloat(localStorage.getItem("percentSmallerGreen")
 var flipCorrectAnswer = parseFloat(localStorage.getItem("flipCorrectAnswer"));
 var stopwatch = null;
 var intervalId = null;
+var zelunMode = true;
 
 $(document).ready(function(){
+	bar = new ProgressBar.Circle(progressBar, {
+		strokeWidth: 6,
+		trailWidth: 1,
+		color: '#00FF00',
+		trailColor: '#ddd',
+	});
+	
+	// disables right click
 	document.addEventListener('contextmenu', event => event.preventDefault());
-	// stopwatch
-	class Stopwatch {
-		constructor(display, results) {
-			this.running = false;
-			this.display = display;
-			this.reset();
-			this.print(this.times);
-		}
-		
-		reset() {
-			this.times = [ 0, 0, 0 ];
-		}
-		
-		start() {
-			if (!this.time) this.time = performance.now();
-			if (!this.running) {
-				this.running = true;
-				requestAnimationFrame(this.step.bind(this));
-			}
-		}
-		
-		stop() {
-			this.running = false;
-			this.time = null;
-		}
-		
-		step(timestamp) {
-			if (!this.running) return;
-			this.calculate(timestamp);
-			this.time = timestamp;
-			this.print();
-			requestAnimationFrame(this.step.bind(this));
-		}
-		
-		calculate(timestamp) {
-			var diff = timestamp - this.time;
-			// Hundredths of a second are 100 ms
-			this.times[2] += diff / 10;
-			// Seconds are 100 hundredths of a second
-			if (this.times[2] >= 100) {
-				this.times[1] += 1;
-				this.times[2] -= 100;
-			}
-			// Minutes are 60 seconds
-			if (this.times[1] >= 60) {
-				this.times[0] += 1;
-				this.times[1] -= 60;
-			}
-		}
-		
-		print() {
-			this.display.innerText = this.format(this.times);
-		}
-		
-		format(times) {
-			return `\
-	${pad0(times[0], 2)}:\
-	${pad0(times[1], 2)}:\
-	${pad0(Math.floor(times[2]), 2)}`;
-		}
+	
+	if (!zelunMode)
+	{
+		$("#btn_container :button").each(function(){
+			$(this).css("visibility", "hidden");
+		});
 	}
 	
 	stopwatch = new Stopwatch(
@@ -80,17 +37,20 @@ $(document).ready(function(){
 		document.querySelector('.results'));
 	
 	initialize();
-		
-	function pad0(value, count) {
-		var result = value.toString();
-		for (; result.length < count; --count)
-			result = '0' + result;
-		return result;
-	}
 
 });
 
 function initialize() {
+	initializeTable();
+	assignRandomNumbers();
+	
+	setPromise();
+	stopwatch.start();
+	markItems();
+}
+
+function initializeTable()
+{
 	var numItems = numColumns * numRows;
 	var table = document.getElementById("sortable");
 	
@@ -103,15 +63,7 @@ function initialize() {
 		li.setAttribute("class", "ui-state-default");
 		li.style.cssText = "width:" + childWidth + "px;";
 		table.appendChild(li);
-		
 	}
-	
-	assignRandomNumbers();
-	$("#sortable, #sortable li").disableSelection();
-	
-	setPromise();
-	stopwatch.start();
-	markItems();
 }
 
 function assignRandomNumbers(){
@@ -154,22 +106,41 @@ function setPromise()
 		{
 			intervalId = move();
 			
-			$(window).unbind("mousedown");
-			$(window).mousedown(function(event){
-				switch(event.which){
-					case 1:
-						event.preventDefault();
-						resolve('swaped');
-						callbackBtnSwap(intervalId);
-						break;
-					case 3:
-						event.preventDefault();
-						resolve('did not swap');
-						callbackBtnNotSwap(intervalId);
-						break;
-				}
-			});
-
+			if (!zelunMode)
+			{
+				$(window).unbind("mousedown");
+				$(window).mousedown(function(event){
+					switch(event.which){
+						case 1:
+							event.preventDefault();
+							resolve('swaped');
+							callbackBtnSwap(intervalId);
+							break;
+						case 3:
+							event.preventDefault();
+							resolve('did not swap');
+							callbackBtnNotSwap(intervalId);
+							break;
+					}
+				});
+			}
+			else
+			{
+				$("#btn_swap").unbind("click");
+				$("#btn_swap").click(function(){
+					event.preventDefault();
+					resolve('swaped');
+					callbackBtnSwap(intervalId);
+				});
+				
+				$("#btn_not_swap").unbind("click");
+				$("#btn_not_swap").click(function(){
+					event.preventDefault();
+					resolve('did not swap');
+					callbackBtnNotSwap(intervalId);
+				});
+			}
+			
 			setTimeout(function(){reject("timeout")}, responseTime);
 		});
 		
@@ -381,6 +352,8 @@ function callbackBtnNotSwap(intervalId)
 
 function callbackTimeout()
 {
+	clearInterval(intervalId);
+	
 	var lower = $("#sortable .selected_lower")[0];
 	var greater = $("#sortable .selected_greater")[0];
 	
@@ -437,17 +410,24 @@ function checkCorrectMove(lower, greater)
 	return isCorrectMove;
 }
 
-function move() {
-	var elem = document.getElementById("myBar");   
-	var width = 1;
-	var id = setInterval(frame, 40); //make a function of responseTime
+function move()
+{
+	var width = 1.0;
+	var id = setInterval(frame, (responseTime/1000)*5);
+	
+	var from = new Color("#00FF00");
+	var to = new Color("#FF4433");
 	
 	function frame() {
 		if (width >= 100) {
 		  clearInterval(id);
 		} else {
-		  width += 1; 
-		  elem.style.width = width + '%'; 
+		  width += 0.5; 
+		  
+		  var backgroundColor = LinearColorInterpolator.findColorBetween(from, to, width).asRgbCss();
+		  bar.path.setAttribute('stroke', backgroundColor);
+		  console.log(width/100);
+		  bar.set(width/100);
 		}
 	}
 	

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>Home</title>
+    	<link rel="icon" href="images/psi_favicon.png">
+    	
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    	<link rel="stylesheet" type="text/css" href="style.css">
+    		
+      	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div id="instructions_wrapper">
+                <h1>Instructions</h1>
+                <hr/>
+                <p>Thanks for your interest in participating in our user study! In the next page you will be asked to sort numbers in ascending order. The numbers will be shown in a table-like fashion and numbers must grow as if the second row was connected to the end of first one, the third row was connected to the end of the second one, and so forth; see the figure below. In this way, lower values will be placed in the top-left portion of the table and larger values will be placed in the bottom-right portion of the table.</p>
+                <img id="instructions_table" src="images/numbers_table.png">
+                <p>You will sort the numbers by deciding, in every round, whether the two selected numbers should be swapped or not. If you press the mouse's left button the two highlighted numbers will be swapped, and if you press the right button no action will be performed (i.e., it does not swap the numbers). You have limited time to decide whether you want to swap the numbers or not.</p>
+                <div id="instructions_swap">
+                    <img id="img_swap" src="images/swap.png">
+                    <img id="img_dont_swap" src="images/do_not_swap.png">
+                </div>
+                <form id="instructions_form" action="sorting_task.html">
+                    <div id="form-group">
+    					<input id="btn_start" type="submit" class="btn btn-danger btn-block" value="Start Study" />
+    				</div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

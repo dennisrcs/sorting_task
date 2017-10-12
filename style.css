@@ -3,10 +3,16 @@
   padding: 0;
 }
 
+body {
+	background-color: #fafafa;
+	color: #151515;
+}
+
 #sortable {
 	padding: 0;
 	margin: 0;
 	list-style-type: none;
+	user-select: none;
 }
 
 #sortable li {
@@ -21,7 +27,7 @@
 #task_wrapper {
 	display: table;
 	margin: 0 auto;
-	margin-top: 50px;
+	margin-top: 150px;
 	width: 1000px;
 	text-align: center;
 }
@@ -60,6 +66,20 @@
 #btn_container {
 	display: table;
 	margin: 0 auto;
+	margin-top: 50px;
+}
+
+#btn_container *{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#btn_container #btn_swap {
+	margin-right: 20px;
+}
+
+#btn_container #btn_not_swap {
+	margin-left: 20px;
 }
 
 #btn_set {
@@ -88,13 +108,37 @@
 	margin-top: 50px;
 }
 
-#myProgress {
-  width: 100%;
-  background-color: #ddd;
+#progressBar {
+	width: 150px;
+	height: 150px;
 }
 
-#myBar {
-  width: 1%;
-  height: 30px;
-  background-color: #4CAF50;
+#btn_swap, #btn_not_swap {
+	width: 150px;
+	height: 75px;
+}
+
+#instructions_table, #instructions_swap{
+	display: table;
+	margin: 0 auto;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+#instructions_swap #img_swap{
+	margin-right: 100px;
+}
+
+#instructions_swap #img_dont_swap{
+	margin-left: 100px;
+}
+
+#instructions_wrapper {
+	display: table;
+	margin: 0 auto;
+	width: 80%;
+}
+
+#instructions_wrapper p {
+	font-size: 14pt;
 }
