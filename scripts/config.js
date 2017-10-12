@@ -9,7 +9,7 @@ $(document).ready(function(){
 	$("#maximum_compensation").val(localStorage.getItem("maximumCompensation"));
 	$("#percent_smaller_green").val(localStorage.getItem("percentSmallerGreen"));
 	$("#flip_correct_answer").val(localStorage.getItem("flipCorrectAnswer"));
-	
+	$("#use_buttons").prop("checked", localStorage.getItem("useButtons") == 'true');
 	
 	$("#btn_set").click(function(event){
 		var visibleTime = parseInt($("#visible_time").val());
@@ -22,7 +22,7 @@ $(document).ready(function(){
 		var maximumCompensation = parseFloat($("#maximum_compensation").val());
 		var percentSmallerGreen = parseFloat($("#percent_smaller_green").val());
 		var flipCorrectAnswer = parseFloat($("#flip_correct_answer").val());
-		var mixAscendingDescending = $("#mix_ascending_descending").prop('checked');
+		var useButtons = $("#use_buttons").prop('checked');
 		
 		if (responseTime < fadeoutTime + visibleTime)
 			responseTime = fadeoutTime + visibleTime;
@@ -40,6 +40,7 @@ $(document).ready(function(){
 		localStorage.setItem("maximumCompensation", maximumCompensation);
 		localStorage.setItem("percentSmallerGreen", percentSmallerGreen);
 		localStorage.setItem("flipCorrectAnswer", flipCorrectAnswer);
+		localStorage.setItem("useButtons", useButtons);
 		
 		event.stopPropagation();
 	});

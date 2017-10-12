@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="scripts/index.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	
 <title>Welcome!</title>
@@ -26,29 +27,5 @@
 			</form>
 		</div>
 	</div>
-	<script>
-		$(document).ready(function(){
-			localStorage.clear();
-			$('#txtparticipant').change(function () {
-				var participantID = $(this).val();
-				localStorage.setItem("participantID", participantID);
-			});
-			resetParameters();
-		});
-		
-		function resetParameters(){
-			localStorage.setItem("visibleTime", 1500);
-			localStorage.setItem("responseTime", 4000);
-			localStorage.setItem("fadeoutTime", 1000);
-			localStorage.setItem("itemsNumber", 20);
-			localStorage.setItem("incrementStep", 0.10);
-			localStorage.setItem("initialCompensation", 3);
-			localStorage.setItem("maximumCompensation", 5);
-			localStorage.setItem("percentSmallerGreen", 0.7);
-			localStorage.setItem("flipCorrectAnswer", 0.05);
-			localStorage.setItem("numColumns", 10);
-			localStorage.setItem("numRows", 10);
-		}
-	</script>
 </body>
 </html>

@@ -1,5 +1,3 @@
-var bar = null;
-
 var failAudio = new Audio('fail.mp3');
 var visibleTime = localStorage.getItem("visibleTime");
 var fadeoutTime = localStorage.getItem("fadeoutTime");
@@ -10,9 +8,11 @@ var incrementStep = localStorage.getItem("incrementStep");
 var maximumCompensation = localStorage.getItem("maximumCompensation");
 var percentSmallerGreen = parseFloat(localStorage.getItem("percentSmallerGreen"));
 var flipCorrectAnswer = parseFloat(localStorage.getItem("flipCorrectAnswer"));
+var zelunMode = (localStorage.getItem("useButtons") == 'true');
+
 var stopwatch = null;
 var intervalId = null;
-var zelunMode = true;
+var bar = null;
 
 $(document).ready(function(){
 	bar = new ProgressBar.Circle(progressBar, {
